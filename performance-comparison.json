@@ -1,0 +1,21 @@
+{
+  "before": {
+    "frames": 32,
+    "medianMs": 2.5,
+    "p95Ms": 5.200000002980232,
+    "meanMs": 3.7406250002095476
+  },
+  "after": {
+    "frames": 116,
+    "medianMs": 0.30000000074505806,
+    "p95Ms": 0.6000000014901161,
+    "meanMs": 0.6517241377511929
+  },
+  "compute": {
+    "engine": "worker",
+    "operation": "compare",
+    "workerMs": 850.6000000014901,
+    "totalMs": 861.8999999985099
+  },
+  "conditions": "Same local browser, 1280x720 viewport, same stored road scenario, route focus and zoom interactions. Render samples include startup/cache refresh; these are CPU drawing times, not an FPS guarantee."
+}

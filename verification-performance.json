@@ -1,0 +1,8 @@
+{
+  "workerScenarios": 4,
+  "workerBenchmarkRuns": 30,
+  "workerCancellation": "passed",
+  "workerFallback": "passed",
+  "nearestRoadProbes": 64,
+  "workerRouteEdges": "identical"
+}

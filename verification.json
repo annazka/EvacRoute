@@ -1,0 +1,9 @@
+{
+  "routeCameraCases": 15,
+  "syntax": "valid",
+  "routingScenarios": 12,
+  "algorithmCosts": "equal",
+  "shelterEligibility": "passed",
+  "localSvgAssets": 36,
+  "standaloneData": "unchanged"
+}
