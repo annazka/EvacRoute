@@ -458,6 +458,7 @@ function initEvacRoute() {
   erRenderResult();
   erGet("mission").dispatchEvent(new Event("change"));
   erGet("notice").textContent = "";
+  erGet("er-startup")?.remove();
 }
 
 // Fit only the actual route geometry into the unobstructed portion of the map.

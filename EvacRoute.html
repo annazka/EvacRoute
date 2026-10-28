@@ -3,7 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Rute Evakuasi Jakarta</title>
+    <title>EvacRoute · Rencanakan evakuasi</title>
+    <style id="er-startup-style">
+      /* Apply before the large map payload is parsed or the UI adapter runs. */
+      html,
+      body {
+        background: #eae6de !important;
+      }
+      .topbar,
+      .statusbar,
+      #dashboard.dashboard {
+        display: none !important;
+      }
+      #er-startup {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: grid;
+        place-content: center;
+        gap: 8px;
+        background: #eae6de;
+        color: #121821;
+        text-align: center;
+        font:
+          14px "Segoe UI",
+          sans-serif;
+      }
+      #er-startup strong {
+        font-size: 22px;
+      }
+    </style>
     <style>
       :root {
         --ink: #18375e;
@@ -1492,6 +1521,9 @@
     <link rel="stylesheet" href="evacroute.css" />
   </head>
   <body>
+    <div id="er-startup" role="status" aria-live="polite">
+      <strong>EvacRoute</strong><span>Memuat peta…</span>
+    </div>
     <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <symbol id="i-pin" viewBox="0 0 24 24">
