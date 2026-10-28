@@ -86,7 +86,7 @@ function erMount() {
   old.querySelector(".map-card").className = "er-offscreen";
   saved["pick-origin-input"].className = "er-origin";
   saved["pick-origin-input"].innerHTML =
-    `<span class="er-origin-icon">${erAsset("imgIconPin", 16, 16)}</span><span class="er-origin-copy"><span class="er-eyebrow">Titik jemput</span><strong id="er-origin-name">Pilih titik pada peta</strong><span class="er-coordinates" id="er-origin-coordinates"></span></span><span class="er-link">Ubah</span>`;
+    `<span class="er-origin-icon">${erAsset("imgIconPin", 16, 16)}</span><span class="er-origin-copy"><span class="er-eyebrow">Titik awal</span><strong id="er-origin-name">Pilih titik pada peta</strong><span class="er-coordinates" id="er-origin-coordinates"></span></span><span class="er-link">Ubah</span>`;
   saved.search.className = "er-primary";
   saved.search.textContent = "Cari rute evakuasi";
   saved.confirm.className = "er-primary";
@@ -160,7 +160,7 @@ function erOriginRoad() {
   const edge = DATA.edges.find(
     (e) => (e[0] === origin || e[1] === origin) && e[5] && e[5] !== "Jalan tanpa nama",
   );
-  const name = edge?.[5] || "Titik jemput di peta";
+  const name = edge?.[5] || "Titik awal di peta";
   erOriginRoadNames.set(origin, name);
   return name;
 }
@@ -340,7 +340,7 @@ function erRenderResult() {
   const overflow = Math.max(0, preview.size - spaces(s)[0]);
   const steps = streets.map(
     (road, i) =>
-      `<div class="er-route-step"><span class="er-step-index">${i + 1}</span><span><strong>${i === 0 ? "Mulai di " : "Lanjut ke "}${escape(road.name)}</strong><p>${i === 0 ? "Dari titik jemput" : "Ikuti ruas pada peta"}</p></span><em>${Math.round(road.distance)} m</em></div>`,
+      `<div class="er-route-step"><span class="er-step-index">${i + 1}</span><span><strong>${i === 0 ? "Mulai di " : "Lanjut ke "}${escape(road.name)}</strong><p>${i === 0 ? "Dari titik awal" : "Ikuti ruas pada peta"}</p></span><em>${Math.round(road.distance)} m</em></div>`,
   );
   erGet("er-result-detail").innerHTML =
     `<div class="er-result-top"><button id="er-back-plan">‹ &nbsp; Ubah rencana</button><span class="er-mission-chip">${escape(erMissionName())}${preview.mission === "food" ? "" : ` · ${preview.size} orang`}</span></div><p class="er-eyebrow">Tujuan evakuasi</p><h2 class="er-result-title">${escape(s.name)}</h2><p class="er-result-subtitle">${s.medical ? "Memiliki tim medis" : "Pengungsian nonkritis"} · ${s.occupants}/${s.capacity} penghuni</p><div class="er-route-stats"><div><strong>${Math.ceil(r.seconds / 60)}</strong> <span>menit</span><small>Waktu tempuh</small></div><div><strong>${(r.distance / 1000).toLocaleString("id-ID", { maximumFractionDigits: 1 })}</strong> <span>km</span><small>Jarak</small></div><div><strong>${RISK[r.risk]}</strong><small>Risiko tertinggi</small></div></div><div class="er-result-notice"><span class="er-destination-icon">${erAsset("imgFrame6", 14, 14)}</span><div><strong>${preview.mission === "food" ? "Shelter dapat menerima bantuan" : overflow > 0 ? "Cadangan medis tersedia" : "Shelter dapat menerima kelompok"}</strong><p>${preview.mission === "food" ? "Perjalanan bantuan tidak mengubah jumlah penghuni." : overflow > 0 ? `${overflow} orang memakai cadangan medis. Penghuni bertambah setelah konfirmasi.` : `${preview.size} orang dapat ditampung. Penghuni bertambah setelah konfirmasi.`}</p></div></div><section class="er-result-section"><h3>Ringkasan kondisi rute</h3><p class="er-result-subtitle">${preview.mode === "safe" ? "Menghindari ruas berisiko berat dan ditutup." : "Mengizinkan risiko berat; seluruh ruas ditutup tetap dihindari."}${r.heavyDistance > 0 ? ` Melewati ${Math.round(r.heavyDistance)} m ruas berisiko berat.` : ""}</p></section><section class="er-result-section"><div class="er-label-row"><h3>Petunjuk jalan</h3><span>${streets.length} ruas bernama</span></div>${steps.slice(0, 3).join("")}${steps.length > 3 ? `<details class="er-route-more"><summary>Lihat ${steps.length - 3} ruas lagi sampai ${escape(s.short_name || s.name)}</summary>${steps.slice(3).join("")}</details>` : ""}</section>${erAlternatives.length ? `<section class="er-result-section"><h3>Alternatif tujuan</h3>${erAlternatives.map(({ id, route }) => `<button class="er-destination" data-alternative="${id}"><span class="er-destination-icon">${erAsset("imgFrame6", 14, 14)}</span><span class="er-destination-copy"><strong>${escape(state.shelters[id].name)}</strong><span>${Math.ceil(route.seconds / 60)} mnt · ${(route.distance / 1000).toFixed(1)} km · ${spaces(state.shelters[id])[0]} tempat normal kosong</span></span><span class="er-link">Pilih</span></button>`).join("")}</section>` : ""}<div class="er-section"><button class="er-link" data-er-open="analysis">Lihat perbandingan A* dan Dijkstra →</button></div>`;
@@ -797,7 +797,7 @@ function erBuildMapMarkers() {
     })
     .join("");
   const [x, y] = screen(nodeXY[origin]);
-  markerLayer.innerHTML += `<div class="er-origin-pin" style="left:${x}px;top:${y}px">${erAsset("imgTitikJemput", 60, 60)}<span><strong>Titik jemput</strong><small>${escape(erOriginRoad())}</small></span></div>`;
+  markerLayer.innerHTML += `<div class="er-origin-pin" style="left:${x}px;top:${y}px">${erAsset("imgTitikJemput", 60, 60)}<span><strong>Titik awal</strong><small>${escape(erOriginRoad())}</small></span></div>`;
   if (preview?.kind === "single" && preview.route.nodes.length) {
     const route = preview.route,
       node = route.nodes[Math.floor(route.nodes.length / 2)],

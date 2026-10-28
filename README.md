@@ -21,7 +21,7 @@ Jalankan `node build.mjs` setelah mengedit sumber untuk memperbarui versi satu f
 
 ## Penggunaan
 
-Pilih titik jemput pada peta, jenis kebutuhan, jumlah orang, tujuan shelter, dan batas risiko. Tekan **Cari rute evakuasi**. Tombol **Mulai evakuasi** mengonfirmasi simulasi dan memperbarui penghuni shelter satu kali. **Analisis algoritma** menampilkan perhitungan A*, Dijkstra, hybrid, kapasitas pengungsian, dan kondisi ruas. **Pengaturan** hanya memuat Jalan Terhalang (skenario acak) dan Pengaturan Shelter.
+Pilih titik awal pada peta, jenis kebutuhan, jumlah orang, tujuan shelter, dan batas risiko. Tekan **Cari rute evakuasi**. Tombol **Mulai evakuasi** mengonfirmasi simulasi dan memperbarui penghuni shelter satu kali. **Analisis algoritma** menampilkan perhitungan A*, Dijkstra, hybrid, kapasitas pengungsian, dan kondisi ruas. **Pengaturan** hanya memuat Jalan Terhalang (skenario acak) dan Pengaturan Shelter.
 
 Kapasitas, fasilitas, risiko, dan kecepatan adalah data simulasi. Cadangan medis tetap dibatasi kapasitas. Petunjuk jalan merangkum urutan ruas, bukan instruksi navigasi kendaraan yang diverifikasi di lapangan. Akun relawan pada interface adalah label mode latihan; tidak ada autentikasi atau data pribadi yang dikirim.
 
@@ -33,7 +33,7 @@ Kapasitas, fasilitas, risiko, dan kecepatan adalah data simulasi. Cadangan medis
 
 Peta memakai enam lapisan jalan SVG asli dari desain. Risiko, penanda shelter, titik awal, dan rute digambar dari keadaan simulasi saat ini. Angka pada layar selalu mengikuti data aktual prototipe, bukan angka contoh dalam Figma.
 
-Setelah rute ditemukan, peta otomatis menyesuaikan zoom dan posisi agar seluruh rute, titik jemput, dan tujuan terlihat tanpa tertutup sidebar atau legenda. Transisi menghormati pengaturan reduced motion. Pada ponsel, layar kembali ke area peta. Tombol fokus dapat mengembalikan tampilan rute setelah pan/zoom manual; membuka detail tidak mengubah kamera.
+Setelah rute ditemukan, peta otomatis menyesuaikan zoom dan posisi agar seluruh rute, titik awal, dan tujuan terlihat tanpa tertutup sidebar atau legenda. Transisi menghormati pengaturan reduced motion. Pada ponsel, layar kembali ke area peta. Tombol fokus dapat mengembalikan tampilan rute setelah pan/zoom manual; membuka detail tidak mengubah kamera.
 
 ## Optimasi performa
 
