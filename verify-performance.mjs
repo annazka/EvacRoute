@@ -105,6 +105,10 @@ try {
   assert.equal(comparison.length, 3);
   for (const row of comparison) {
     assert.equal(row.repeats, 10);
+    assert.equal(row.samples.length, 10);
+    assert.ok(
+      Math.abs(row.samples.reduce((sum, sample) => sum + sample.total, 0) / 10 - row.meanMs) < 1e-8,
+    );
     benchmarkRuns += row.repeats;
     assert.ok(Math.abs(row.seconds - reference.seconds) < 1e-6);
     assert.ok(Number.isFinite(row.meanMs) && row.meanMs >= 0);
@@ -113,6 +117,74 @@ try {
     comparison[0].stats.checked,
     reference.reverseStats.checked + reference.forwardStats.checked,
   );
+  const analysisContext = vm.createContext({ TextEncoder });
+  vm.runInContext(
+    await readFile(path.join(root, "evacroute-analysis.js"), "utf8"),
+    analysisContext,
+  );
+  let reportModel;
+  for (const mission of ["normal", "critical", "food"]) {
+    for (const size of [1, 5]) {
+      reportModel = analysisContext.erCreateAnalysisModel({
+        data,
+        changes: {},
+        results: comparison,
+        route: reference,
+        source: data.origin,
+        target: targets[0].node,
+        mode: "safe",
+        shelters: data.shelters,
+        mission,
+        size,
+        selectedTarget: "auto",
+        shelterName: data.shelters[0].name,
+      });
+      assert.equal(
+        reportModel.counts.allowed +
+          reportModel.counts.denied +
+          reportModel.counts.closed +
+          reportModel.counts.heavy,
+        data.edges.length,
+      );
+      assert.equal(reportModel.routeViolations, 0);
+      reportModel.shelterRows.forEach((row, index) =>
+        assert.equal(row.eligible, api.shelterEligible(data.shelters[index], mission, size)),
+      );
+    }
+  }
+  const riskyChanges = api.randomRoadConditions(data, {}, 0.15, 12345).changes;
+  for (const mode of ["safe", "emergency"]) {
+    const model = analysisContext.erCreateAnalysisModel({
+      data,
+      changes: riskyChanges,
+      results: comparison,
+      route: reference,
+      source: data.origin,
+      target: targets[0].node,
+      mode,
+      shelters: data.shelters,
+      mission: "critical",
+      size: 5,
+      selectedTarget: "0",
+      shelterName: data.shelters[0].name,
+    });
+    assert.equal(
+      model.counts.allowed + model.counts.denied + model.counts.closed + model.counts.heavy,
+      data.edges.length,
+    );
+    assert.ok(model.counts.closed > 0);
+    assert.equal(model.shelterRows.filter((row) => row.selected).length, 1);
+    assert.equal(model.counts.heavy > 0, mode === "safe");
+  }
+  const pdfBytes = analysisContext.erBuildAnalysisPdf(
+    analysisContext.erAnalysisReportBlocks(reportModel),
+  );
+  const pdfText = new TextDecoder().decode(pdfBytes);
+  assert.ok(pdfText.startsWith("%PDF-1.4"));
+  assert.ok(pdfText.includes("Kompleksitas teoretis"));
+  assert.ok(pdfText.includes("Constraint yang dievaluasi"));
+  assert.ok(pdfText.endsWith("%%EOF\n"));
+  assert.ok(Number(pdfText.match(/startxref\n(\d+)/)[1]) === pdfText.indexOf("xref\n"));
   const cancelledId = ++id,
     promise = waitFor(cancelledId);
   worker.postMessage({
@@ -211,6 +283,9 @@ const report = {
   workerFallback: "passed",
   nearestRoadProbes: probes.length,
   workerRouteEdges: "identical",
+  analysisConstraintCases: 8,
+  rawTimingSamples: 30,
+  pdfStructure: "passed",
 };
 await writeFile(
   path.join(root, "verification-performance.json"),

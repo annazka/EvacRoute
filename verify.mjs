@@ -15,6 +15,7 @@ for (const [, attributes, code] of scripts) {
 const ui = await readFile(path.join(root, "evacroute-ui.js"), "utf8");
 new vm.Script(ui);
 new vm.Script(await readFile(path.join(root, "evacroute-performance.js"), "utf8"));
+new vm.Script(await readFile(path.join(root, "evacroute-analysis.js"), "utf8"));
 const cameraContext = vm.createContext({});
 vm.runInContext(
   ui.slice(ui.indexOf("function erRouteCamera("), ui.indexOf("function erInstallRouteCamera(")),
@@ -145,6 +146,7 @@ for (const [, attrs, code] of standalone.matchAll(/<script([^>]*)>([\s\S]*?)<\/s
 assert.ok(!standalone.includes("https://www.figma.com/api/mcp/asset/"));
 assert.ok(!standalone.includes('src="evacroute-ui.js"'));
 assert.ok(!standalone.includes('src="evacroute-performance.js"'));
+assert.ok(!standalone.includes('src="evacroute-analysis.js"'));
 assert.ok(!standalone.includes('href="evacroute.css"'));
 const standaloneData = JSON.parse(
   [...standalone.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].find((s) =>

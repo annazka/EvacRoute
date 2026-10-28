@@ -465,6 +465,7 @@ function initEvacRoute() {
     erGet("er-layers").setAttribute("aria-expanded", String(open));
   };
   erInstallPerformance();
+  erInstallAnalysis();
   erInstallMap();
   erSyncForm();
   erRenderResult();

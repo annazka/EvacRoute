@@ -4,5 +4,8 @@
   "workerCancellation": "passed",
   "workerFallback": "passed",
   "nearestRoadProbes": 64,
-  "workerRouteEdges": "identical"
+  "workerRouteEdges": "identical",
+  "analysisConstraintCases": 8,
+  "rawTimingSamples": 30,
+  "pdfStructure": "passed"
 }

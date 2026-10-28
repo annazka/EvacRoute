@@ -10,6 +10,7 @@ Buka **EvacRoute_Optimized.html** (atau **EvacRoute_Standalone.html**) di browse
 
 - `EvacRoute.html`: markup, data jalan, algoritma, dan logika simulasi.
 - `evacroute-performance.js`: cache peta, indeks spasial ruas, worker pencarian dan benchmark, serta daftar ruas per halaman.
+- `evacroute-analysis.js`: ringkasan analisis, kompleksitas, audit constraint, waktu per pengukuran, dan ekspor PDF offline.
 - `evacroute-ui.js`: interface Figma, pilihan kebutuhan, tujuan, hasil, dan penghubung ke logika simulasi.
 - `evacroute.css`: warna, tipografi, tata letak desktop dan ponsel.
 - `assets/figma/`: aset SVG asli dari Figma.
@@ -42,5 +43,11 @@ Peta menggunakan raster cache yang dipakai ulang selama pan/zoom. Setelah kamera
 Pencarian rute, alternatif tujuan, dan benchmark A*/Dijkstra/hybrid berjalan di satu Web Worker memakai koordinat dan panjang ruas yang dikirim sebagai buffer numerik. Ketiga metode benchmark tetap menerima kondisi yang sama, satu pemanasan, dan sepuluh pengukuran. Bila browser tidak mendukung worker, aplikasi menggunakan mesin semula. Penghitungan yang kedaluwarsa dibatalkan dan tidak boleh mengganti hasil skenario baru.
 
 Daftar jalan terhalang dibuka saat diperlukan dan menampilkan 100 baris per halaman. Mengubah penghuni shelter tidak membangun ulang gambar jaringan jalan.
+
+## Analisis dan PDF
+
+Analisis menampilkan ringkasan ketiga metode, lalu detail waktu, kompleksitas dan operasi, constraint jalan/shelter, serta audit g/h/f. Sepuluh sampel waktu asli disimpan per metode, termasuk persiapan, pencarian, dan selisih rekonstruksi/overhead. Kompleksitas Big-O, substitusi rumus skala, dan operasi aktual diberi label terpisah. Kapasitas shelter dan daftar jalan tersedia dalam bagian tambahan.
+
+Tombol **Ekspor PDF** pada hasil rute atau tab analisis mengunduh laporan PDF langsung, tanpa koneksi internet atau dialog cetak. Jika benchmark belum ada, aplikasi menghitungnya terlebih dahulu. Laporan menyertakan sampel waktu, audit constraint, seluruh biaya ruas rute hybrid, dan maksimal 60 langkah jejak tiap metode.
 
 Jalankan `node verify-performance.mjs` untuk memeriksa kesamaan ruas dan biaya hasil worker, benchmark 30 pengukuran, pembatalan/fallback worker, dan 64 pemeriksaan ruas terdekat. Hasil tersimpan di `verification-performance.json`. Pengukuran render lokal sebelum/sesudah tersedia di `performance-comparison.json`: waktu CPU menggambar, bukan jaminan FPS pada perangkat lain. Diagnostik lokal dapat diaktifkan dengan `?perf=1`; tidak ada telemetri yang dikirim keluar.

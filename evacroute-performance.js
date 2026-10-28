@@ -422,6 +422,13 @@ function erRoutingWorkerMain() {
             reverseMs: runs.reduce((a, b) => a + (b.dijkstraMs ?? 0), 0) / 10,
             forwardMs: runs.reduce((a, b) => a + (b.astarMs ?? b.ms), 0) / 10,
             repeats: 10,
+            samples: runs.map((run) => ({
+              total: run.totalMs,
+              prep: run.preprocessMs,
+              search: (run.dijkstraMs ?? 0) + (run.astarMs ?? run.ms),
+              reverse: run.dijkstraMs ?? 0,
+              forward: run.astarMs ?? run.ms,
+            })),
             stats: r.reverseStats
               ? Object.fromEntries(
                   ["popped", "stale", "checked", "relaxed", "pushed"].map((k) => [
