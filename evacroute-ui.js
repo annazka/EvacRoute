@@ -110,7 +110,7 @@ function erMount() {
   roadSettings.className = "er-road-settings";
   roadSettings.innerHTML = "<h3>Jalan Terhalang</h3>";
   const densityField = erGet("random-density").closest(".field");
-  densityField.querySelector("label").textContent = "Tingkat hambatan";
+  densityField.querySelector("label").textContent = "Tingkat hambatan (%)";
   roadSettings.append(
     densityField,
     erGet("randomize"),

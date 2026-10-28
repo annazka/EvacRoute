@@ -22,6 +22,8 @@ Jalankan `node build.mjs` setelah mengedit sumber untuk memperbarui versi satu f
 
 ## Penggunaan
 
+Tingkat hambatan di Pengaturan menerima input angka 0–100 persen, termasuk desimal seperti 7.35. Tekan **Acak Kondisi Jalan** untuk menerapkannya; jumlah ruas fisik terdampak dibulatkan ke bilangan terdekat. **Reset Kondisi Jalan** mengembalikan seluruh ruas ke normal tanpa mengubah shelter.
+
 Pilih titik awal pada peta, jenis kebutuhan, jumlah orang, tujuan shelter, dan batas risiko. Tekan **Cari rute evakuasi**. Tombol **Mulai evakuasi** mengonfirmasi simulasi dan memperbarui penghuni shelter satu kali. **Analisis algoritma** menampilkan perhitungan A*, Dijkstra, hybrid, kapasitas pengungsian, dan kondisi ruas. **Pengaturan** hanya memuat Jalan Terhalang (skenario acak) dan Pengaturan Shelter.
 
 Kapasitas, fasilitas, risiko, dan kecepatan adalah data simulasi. Cadangan medis tetap dibatasi kapasitas. Petunjuk jalan merangkum urutan ruas, bukan instruksi navigasi kendaraan yang diverifikasi di lapangan. Akun relawan pada interface adalah label mode latihan; tidak ada autentikasi atau data pribadi yang dikirim.

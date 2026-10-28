@@ -65,10 +65,13 @@ const core = scripts.find((s) => s[1].includes('id="core"'))[2];
 const context = vm.createContext({ performance, module: { exports: {} } });
 vm.runInContext(core, context);
 const api = context.module.exports;
-for (const density of [0, 0.02, 0.05, 0.1]) {
+for (const density of [0, 0.02, 0.05, 0.0735, 0.1, 0.3333, 1]) {
   const { summary } = api.randomRoadConditions(data, {}, density, 12345);
   assert.equal(summary.affected, Math.round(summary.totalRoads * density));
   assert.equal(summary.light + summary.heavy + summary.closed, summary.affected);
+}
+for (const density of [-0.01, 1.01, NaN, Infinity]) {
+  assert.throws(() => api.randomRoadConditions(data, {}, density, 12345), /0% dan 100%/);
 }
 const cleared = api.randomRoadConditions(data, { 0: { risk: 3, speed: 10 } }, 0, 12345);
 assert.equal(cleared.summary.affected, 0);
