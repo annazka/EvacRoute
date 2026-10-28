@@ -111,7 +111,12 @@ function erMount() {
   roadSettings.innerHTML = "<h3>Jalan Terhalang</h3>";
   const densityField = erGet("random-density").closest(".field");
   densityField.querySelector("label").textContent = "Tingkat hambatan";
-  roadSettings.append(densityField, erGet("randomize"), erGet("random-summary"));
+  roadSettings.append(
+    densityField,
+    erGet("randomize"),
+    erGet("reset-roads"),
+    erGet("random-summary"),
+  );
   const shelterSettings = [...saved["advanced-settings"].children].find(
     (node) =>
       node.tagName === "DETAILS" &&

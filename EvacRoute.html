@@ -1656,18 +1656,18 @@
             <label for="random-density"
               ><svg class="icon"><use href="#i-alert" /></svg>Jalan Terhalang · Skenario Acak</label
             ><select id="random-density">
-              <option value="0">0%</option>
               <option value="0.02">2%</option>
               <option value="0.05">5%</option>
-              <option value="0.08">Sedikit, 8 persen ruas</option>
+              <option value="0.08">8%</option>
               <option value="0.1">10%</option>
-              <option value="0.15" selected>Sedang, 15 persen ruas</option>
-              <option value="0.25">Banyak, 25 persen ruas</option>
+              <option value="0.15" selected>15%</option>
+              <option value="0.25">25%</option>
             </select>
           </div>
           <button id="randomize" class="btn soft">
             <svg class="icon"><use href="#i-shuffle" /></svg>Acak Kondisi Jalan
           </button>
+          <button id="reset-roads" class="btn">Reset Kondisi Jalan</button>
           <p id="random-summary" class="hint" aria-live="polite"></p>
           <details>
             <summary>Kelompok Pengungsi · Alokasi DP</summary>
@@ -2551,6 +2551,7 @@
           "save-road",
           "save-shelter",
           "randomize",
+          "reset-roads",
           "reset",
         ])
           $(id).disabled = value;
@@ -3254,7 +3255,7 @@
       }
       function renderRandomSummary() {
         const r = state.randomization;
-        $("random-density").value = String(r?.density ?? 0.15);
+        $("random-density").value = String(r?.density > 0 ? r.density : 0.15);
         $("random-summary").textContent = r
           ? `${r.affected} ruas terdampak dari ${r.totalRoads} ruas fisik wilayah inti. Ringan ${r.light}, berat ${r.heavy}, tertutup ${r.closed}. Seed ${r.seed}.`
           : "Klik Acak Kondisi Jalan untuk membuat skenario hambatan. Seluruh arah pada ruas yang sama mendapat risiko yang sama.";
@@ -3276,6 +3277,13 @@
           `Hambatan diacak. ${r.summary.light} ruas ringan, ${r.summary.heavy} berat, ${r.summary.closed} tertutup. Hitung ulang rute hybrid.`,
         );
         renderRandomSummary();
+        if (selected !== null) selectRoad(selected);
+      }
+      function resetRoads() {
+        if (busy) return;
+        state.changes = {};
+        state.randomization = null;
+        changeScenario("Kondisi jalan direset. Semua ruas kembali normal.");
         if (selected !== null) selectRoad(selected);
       }
       function reset() {
@@ -3865,6 +3873,7 @@
       $("advanced-edit-road").onclick = () => setInteraction("road");
       $("save-shelter").onclick = saveShelter;
       $("reset").onclick = reset;
+      $("reset-roads").onclick = resetRoads;
       $("export").onclick = exportResults;
       $("edit-shelter").onchange = renderShelterEditor;
       $("groups").onclick = (e) => {
