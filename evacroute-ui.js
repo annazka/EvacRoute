@@ -117,9 +117,16 @@ function erMount() {
       node.tagName === "DETAILS" &&
       node.querySelector("summary")?.textContent.trim() === "Pengaturan Shelter",
   );
-  shelterSettings.classList.add("er-shelter-settings");
-  shelterSettings.open = true;
-  settingsContent.append(roadSettings, shelterSettings);
+  const shelterSection = document.createElement("section");
+  shelterSection.className = "er-shelter-settings";
+  const shelterHeading = document.createElement("h3");
+  shelterHeading.textContent = "Pengaturan Shelter";
+  shelterSection.append(
+    shelterHeading,
+    ...[...shelterSettings.children].filter((node) => node.tagName !== "SUMMARY"),
+  );
+  shelterSettings.remove();
+  settingsContent.append(roadSettings, shelterSection);
   saved.notice.className = "er-toast";
   saved.notice.textContent = "";
   document.body.append(saved.notice);

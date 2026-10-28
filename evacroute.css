@@ -1292,11 +1292,10 @@ body.evacroute {
   margin-top: 24px;
   padding-top: 20px;
 }
-.er-shelter-settings > summary {
+.er-shelter-settings > h3 {
   font-size: 15px;
   font-weight: 700;
-  cursor: pointer;
-  margin-bottom: 16px;
+  margin: 0 0 16px;
 }
 
 /* Reuse and composite marker nodes without layout on every animation frame. */

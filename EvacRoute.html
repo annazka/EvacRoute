@@ -1656,7 +1656,11 @@
             <label for="random-density"
               ><svg class="icon"><use href="#i-alert" /></svg>Jalan Terhalang · Skenario Acak</label
             ><select id="random-density">
+              <option value="0">0%</option>
+              <option value="0.02">2%</option>
+              <option value="0.05">5%</option>
               <option value="0.08">Sedikit, 8 persen ruas</option>
+              <option value="0.1">10%</option>
               <option value="0.15" selected>Sedang, 15 persen ruas</option>
               <option value="0.25">Banyak, 25 persen ruas</option>
             </select>
@@ -2402,7 +2406,7 @@
 
       // Satu pilihan acak untuk satu ruas fisik, termasuk seluruh arah baliknya.
       function randomRoadConditions(data, previous, density, seed) {
-        if (![0.08, 0.15, 0.25].includes(density))
+        if (![0, 0.02, 0.05, 0.08, 0.1, 0.15, 0.25].includes(density))
           throw Error("Tingkat hambatan acak tidak valid.");
         const bbox = data.metadata.core_bbox,
           physical = new Map();
